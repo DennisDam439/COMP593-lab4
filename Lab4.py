@@ -73,4 +73,21 @@ return matching_records, captured_data
 
 
 ### step 8
-
+def tally_port_traffic(log_file):
+    return
+    """Tally the number of records for each destination used in a log file.
+            Args:   
+                log_file (str): Path of the log file
+        Returns:
+            (dict): Dictionary of destination of port numbers and values are record counts.
+        """
+    port_counts ={}
+    with open(log_file, 'r') as f:
+        for line in f:
+            match = re.search(regex, line, re. IGNORECASE)
+            if match:
+                port_counts[match.group(1)] = port_counts.get(match.group(1), 0) + 1
+               else:
+                port_counts[match.group(1)] = port_counts.get(match.group(1), 0) + 1
+    return port_counts 
+                
