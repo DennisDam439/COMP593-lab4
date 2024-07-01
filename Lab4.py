@@ -22,11 +22,23 @@ def main():
 
 #step 3
 def get_log_file_path_from_cmd_line():
+    """get_log_file_path_from_cmd_line parameters
+
+    args:
+        None
+    
+    returns:
+        str: path of the log file
+
+    Raises:
+        SystemExit: If no command line parameter is provided, or if the
+            command line paraeter is not the path of an existing file.
+    """ 
     if len(sys.argv) != 2:
         print("error: log file not provided.")
         sys.exit(1)
 
-    log_file = sys.argv[1]
+    log_file_path = sys.argv[1]
     if not os.path.isfile(log_file_path):
         print(f"error: error file not found at {log_file_path}") 
         sys.exit(1)
@@ -51,22 +63,22 @@ def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, 
     captured_data = []
     with open(log_file, 'r') as f:
         for line in f:
-            if ignore case:
+            if ignore_case:
                 match = re.search(regex, line, re. IGNORECASE)
             else:
                 match = re.search(regex, line)
             if match:
                 records.append(line.strip())
-                if match.groups()
+                if match.groups():
                     captured_data.append(match.groups())
                 if print_records:
                     print(line.strip())
 
 if print_summmury:
     if ignore_case:
-        print(f"The log file contains {len(records)} matching records") records that case-insensitive match the regex \"{regex}\".")    
+        print(f"The log file contains {len(records)} records that case-insensitive match the regex \"{regex}\".")    
     else:
-        print(f"The log file contains {len(records)} matching records") records that match the regex \"{regex}\".")
+        print(f"The log file contains {len(records)} records that match the regex \"{regex}\".")
 return records, captured_data
 
 
