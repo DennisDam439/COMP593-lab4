@@ -3,9 +3,7 @@
 #Course: Scripting Applications# 
 #Assignment: 4#
 
-
-
-## filepath=(/Users/dennidam/Desktop/Lab-assignment-3-scrpiting-applications-/lab-4-gateway-/gateway.log)##
+##filepath=(/Users/dennidam/Desktop/Lab-assignment-3-scrpiting-applications-/lab-4-gateway-/gateway.log)##
 
 ##### project: writing a python script that process a text file line by line #####
 
@@ -17,8 +15,6 @@ import os
 import pandas as pd
 
 
-
-
 def main():
     log_file = get_log_file_path_from_cmd_line()
     # ...
@@ -27,14 +23,15 @@ def main():
 #step 3
 def get_log_file_path_from_cmd_line():
     if len(sys.argv) != 2:
-        print("error")
+        print("error: log file not provided.")
         sys.exit(1)
 
     log_file = sys.argv[1]
-    if not os.path.isfile(log_file_path);
-        print("error", log_file)
+    if not os.path.isfile(log_file_path):
+        print(f"error: error file not found at {log_file_path}") 
         sys.exit(1)
-    return log_file
+
+    return get_log_file_path
 
 
 #step 4-7
@@ -42,17 +39,13 @@ def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, 
     """Gets a list of records in a log file that match a specified regex.
 
     Args:
-        log_file (str): Path of the log file
+        log_file (str): Path of the log file.
         regex (str): Regex filter
         ignore_case (bool, optional): Enable case insensitive regex matching. Defaults to True.
         print_summary (bool, optional): Enable printing summary of results. Defaults to False.
         print_records (bool, optional): Enable printing all records that match the regex. Defaults to False.
-
-        Returns:
-            (list, list): List of records that match regex, List of tuples of captured data
-        """
     Returns:
-        (list, list): List of records that match regex, List of tuples of captured data
+            (list, list): List of records that match regex, List of tuples of captured data
     """
     records = []
     captured_data = []
@@ -63,77 +56,91 @@ def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, 
             else:
                 match = re.search(regex, line)
             if match:
-            matching_records.append(line)
-            if match.groups()
-                captured_data.append(match.groups())
-if print_records:
-    for record in matching_records:
-        print(record)
+                records.append(line.strip())
+                if match.groups()
+                    captured_data.append(match.groups())
+                if print_records:
+                    print(line.strip())
+
 if print_summmury:
     if ignore_case:
-        print(f"Found {len(matching_records)} matching records") records that case-sensitive match the regex \"{regex}\".")    
+        print(f"The log file contains {len(records)} matching records") records that case-insensitive match the regex \"{regex}\".")    
     else:
-        print(f"Found {len(matching_records)} matching records") records that match the regex \"{regex}\".")
-return matching_records, captured_data
-
-
-# step 5 
-filter_log_by_regex(log_file, 'sshd' ignore_case=True, print_records=True, print_summury=True)
-filter_log_by_regex(log_file, 'sshd', 'invalid_user', ignore_case=True, print_records=True, print_summury=True)
-filter_log_by_regex(log_file, 'invalid user .*220.190.35.40', ignore_case=True, print_records=True, print_summury=True)
-filter_log_by_regex(log_file, 'error', ignore_case=True, print_records=True, print_summury=True)
-filter_log_by_regex(log_file, 'pam', ignore_case=True, print_records=True, print_summury=True)
-
-
-
-
-
+        print(f"The log file contains {len(records)} matching records") records that match the regex \"{regex}\".")
+return records, captured_data
 
 
 
 ### step 8 ##
 def tally_port_traffic(log_file):
-    """Tallies the number of records for each destination port used in a log file:
+    """Tallies traffic by a log file:
+    
     Args:
-        log_file (str): Path of the log file
+        log_file (str): Path of the log file.
+    
     Returns:
-        (dict): Dictionary of destination ports and the number of records for each port
+        dict: Dictionary of destination ports and the number records counts.
     """
     port_traffic = {}
     with open(log_file, 'r') as f:
         for line in f:
-            match = re.search(regex, line)
+            match = re.search(r'DPT=(\d+)', line)
             if match:
-            port = int(match.group(1))
-            if port in port_traffic:
-                port_traffic[port] += 1
+                port = match.group(1)
+                if port in port_counts:
+                    port_counts[port] += 1
             else:
                 port_traffic[port] = 1
     return port_counts
 
-    
 
 
 ##### step 9 #####
 def generate_port_traffic_report(log_file, port_number):
-    """Generates a CSV report for a specified destination port:
+    """Generates a CSV report for a specified destination port number.
 
     Args:
         log_file (str): Path of the log file.
-        port_number (int): Destination port number
-    """"
-    reocrds, _ = filter_log_by_regex(log_file, f'DTP={port_number}', ignore_case=True)
-    data = []
-    for record in records:
-        date_time = re.search(r'(\w+ \d+ \d+: d+:\d+)', record).group(1)
-        src_ip = (r'SRC=(\d+\.\d+\ d+\.d+)
-        dst_ip =(r'DST= (\d+\.\d+\ d+\.d+)
-        src_port = re.search(r'SRC=(\d+)', record).group(1)
-        dst_port = re.search(r'DST=(\d+)', record).group(1)
-            data.append([date_time, src_ip, dst_ip, src_port, dst_port])
-    df = pd.DataFrame(data, colums=['Date', 'Sorce IP', 'Destination IP', 'Source Port', 'Destination Port'])
-     df.to_csv(f'port_{port_number}_report.csv', index=False)
-
-
-
+        port_number (str): Destination port number
     
+    returns:
+        None
+    """
+    records, _ = []
+    with open(log_file, 'r') as f:
+        for line in f:
+            match = re.search(r'DPT={port_number}', line)
+            if match:
+                date, time, src, dst, spt, dpt = re.findall(r'(Jan \d+ \d+: d+:\d+) |SRC= (.*?)|DST= (.*?)|SPT= (.*?)|DPT= (.*?)', line)
+                records.append([date, time, src, dst, spt, dpt])
+
+    df = pd.DataFrame(records, colums=['Date', 'Sorce IP', 'Destination IP', 'Source Port', 'Destination Port'])
+    df.to_csv(f"destination_port_{port_number}_report.csv", index=False)
+
+
+                
+
+####Step 11###
+def generate invalid user report(log_file):
+    """Generates a CSV report of invalid user login attempts.
+
+    Args:
+        log_file (str): Path of the log file.
+    
+    Returns:
+        None
+    """
+    records, _ = []
+    with open(log_file, 'r') as f:
+        for line in f:
+            match = re.search(r'Invalid user', (.*?) from (.*?)', line)
+            if match:
+                date, time, src, dst = re.findall(r'(Jan \d+ \d+: d+:\d+) |Invalid user (.*?) from(.*?)', line)
+                records.append([date, time, user, ip])
+
+df = pd.Dataframes(records, columns=['Date', Time', 'Username' IP Address'])
+df.to_csv('invalid_user_report.csv', index=False)
+
+
+
+
