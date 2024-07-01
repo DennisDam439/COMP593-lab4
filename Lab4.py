@@ -14,40 +14,51 @@
 import re
 import sys
 import os
-import csv
+import pandas as pd
+
+
 
 
 def main():
     log_file = get_log_file_path_from_cmd_line()
 
 #step 3
-    def_get_log_files_path_from_cmd_line ():
+def_get_log_files_path_from_cmd_line ():
     if len(sys.argv) < 2:
         print("error")
         sys.exit(1)
     log_file = sys.argv[1]
     if not os.path.isfile(log_file);
-        print("error")
+        print("error", log_file)
         sys.exit(1)
     return log_file
 
-#step 4
-    def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, print_records=False):
-        """Gets a list of records in a log file that match a specified regex.
+# step 5 
+filter_log_by_regex(log_file, 'sshd' ignore_case=True, print_records=True, print_summury=True)
+filter_log_by_regex(log_file, 'sshd', 'invalid_user', ignore_case=True, print_records=True, print_summury=True)
+filter_log_by_regex(log_file, 'invalid user .*220.190.35.40', ignore_case=True, print_records=True, print_summury=True)
+filter_log_by_regex(log_file, 'error', ignore_case=True, print_records=True, print_summury=True)
+filter_log_by_regex(log_file, 'pam', ignore_case=True, print_records=True, print_summury=True)
 
-        Args:
-            log_file (str): Path of the log file
-            regex (str): Regex filter
-            ignore_case (bool, optional): Enable case insensitive regex matching. Defaults to True.
-            print_summary (bool, optional): Enable printing summary of results. Defaults to False.
-            print_records (bool, optional): Enable printing all records that match the regex. Defaults to False.
+
+
+#step 4-7
+def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, print_records=False):
+    """Gets a list of records in a log file that match a specified regex.
+
+    Args:
+        log_file (str): Path of the log file
+        regex (str): Regex filter
+        ignore_case (bool, optional): Enable case insensitive regex matching. Defaults to True.
+        print_summary (bool, optional): Enable printing summary of results. Defaults to False.
+        print_records (bool, optional): Enable printing all records that match the regex. Defaults to False.
 
         Returns:
             (list, list): List of records that match regex, List of tuples of captured data
         """
-        returns:
+    returns:
         (list, list): List of records that match regex, List of tuples of captured data
-        """
+    """
 matching_records = []
 captured_data = []
 with open(log_file, 'r') as f:
@@ -72,22 +83,23 @@ return matching_records, captured_data
 
 
 
-### step 8
+### step 8 ##
 def tally_port_traffic(log_file):
-    return
-    """Tally the number of records for each destination used in a log file.
-            Args:   
-                log_file (str): Path of the log file
-        Returns:
-            (dict): Dictionary of destination of port numbers and values are record counts.
-        """
-    port_counts ={}
+    """Tallies the number of records for each destination port used in a log file:
+    Args:
+        log_file (str): Path of the log file
+    Returns:
+        (dict): Dictionary of destination ports and the number of records for each port
+    """
+    port_traffic = {}
     with open(log_file, 'r') as f:
         for line in f:
-            match = re.search(regex, line, re. IGNORECASE)
+            match = re.search(regex, line)
             if match:
-                port_counts[match.group(1)] = port_counts.get(match.group(1), 0) + 1
-               else:
-                port_counts[match.group(1)] = port_counts.get(match.group(1), 0) + 1
+            port = int(match.group(1))
+            if port in port_traffic:
+                port_traffic[port] += 1
+            else:
+                port_traffic[port] = 1
     return port_counts 
-                
+    
