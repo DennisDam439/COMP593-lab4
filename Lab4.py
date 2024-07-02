@@ -22,18 +22,6 @@ def main():
 
 #step 3
 def get_log_file_path_from_cmd_line():
-    """get_log_file_path_from_cmd_line parameters
-
-    args:
-        None
-    
-    returns:
-        str: path of the log file
-
-    Raises:
-        SystemExit: If no command line parameter is provided, or if the
-            command line paraeter is not the path of an existing file.
-    """ 
     if len(sys.argv) != 2:
         print("error: log file not provided.")
         sys.exit(1)
@@ -48,17 +36,6 @@ def get_log_file_path_from_cmd_line():
 
 #step 4-7 combined 
 def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, print_records=False):
-    """Gets a list of records in a log file that match a specified regex.
-
-    Args:
-        log_file (str): Path of the log file.
-        regex (str): Regex filter
-        ignore_case (bool, optional): Enable case insensitive regex matching. Defaults to True.
-        print_summary (bool, optional): Enable printing summary of results. Defaults to False.
-        print_records (bool, optional): Enable printing all records that match the regex. Defaults to False.
-    Returns:
-            (list, list): List of records that match regex, List of tuples of captured data
-    """
     records = []
     captured_data = []
     with open(log_file, 'r') as f:
@@ -86,14 +63,6 @@ def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, 
 
 ### step 8 ##
 def tally_port_traffic(log_file):
-    """Tallies traffic by a log file:
-    
-    Args:
-        log_file (str): Path of the log file.
-    
-    Returns:
-        dict: Dictionary of destination port number records counts.
-    """
     port_counts = {}
     with open(log_file, 'r') as f:
         for line in f:
@@ -110,15 +79,6 @@ def tally_port_traffic(log_file):
 
 ##### step 9 #####
 def generate_port_traffic_report(log_file, port_number):
-    """Generates a CSV report for a specified destination port number.
-
-    Args:
-        log_file (str): Path of the log file.
-        port_number (str): Destination port number
-    
-    returns:
-        None
-    """
     records, _ = []
     with open(log_file, 'r') as f:
         for line in f:
@@ -135,14 +95,6 @@ def generate_port_traffic_report(log_file, port_number):
 
 ####Step 11### generating invalid user report 
 def generate_invalid_user_report(log_file):
-    """Generates a CSV report of invalid user login attempts.
-
-    Args:
-        log_file (str): Path of the log file.
-    
-    Returns:
-        None
-    """
     records = []
     with open(log_file, 'r') as f:
         for line in f:
@@ -159,15 +111,6 @@ def generate_invalid_user_report(log_file):
 
 ####Step 12### to generate source ip log 
 def generate_source_ip_log(log_file, ip_address):
-    """"Extracts and saves records from the log file a specified source IP address.
-
-    Args:
-        log_file (str): Path of the log file.
-        ip_address (str): Source IP address
-    
-    returns:
-        none 
-    """
     records, _ = filter_log_by_regex(log_file, f'SRC={ip_address}') 
     with open('source_ip_log.csv', 'w') as f:
         for record in records:
