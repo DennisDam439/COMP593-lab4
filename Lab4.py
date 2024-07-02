@@ -5,7 +5,7 @@
 
 ##filepath=(/Users/dennidam/Desktop/Lab-assignment-3-scrpiting-applications-/lab-4-gateway-/gateway.log)##
 
-##### project: writing a python script that process a text file line by line #####
+##### project: writing a python script that process a gateway log file line by line #####
 
 
 
@@ -117,5 +117,3 @@ def generate_source_ip_log(log_file, ip_address):
             f.write(record + '\n')
 if __name__ == '__main__':
     main()
-
-
