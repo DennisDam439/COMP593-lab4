@@ -17,7 +17,7 @@ import pandas as pd
 
 def main():
     log_file = get_log_file_path_from_cmd_line()
-    # ...
+
 
 
 #step 3
@@ -34,7 +34,7 @@ def get_log_file_path_from_cmd_line():
     return log_file_path
 
 
-#step 4-7 combined 
+#step 4-7## 
 def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, print_records=False):
     records = []
     captured_data = []
@@ -73,7 +73,7 @@ def tally_port_traffic(log_file):
                     port_counts[port] += 1
                 else:
                     port_counts[port] = 1
-    return port_counts
+        return port_counts
 
 
 
