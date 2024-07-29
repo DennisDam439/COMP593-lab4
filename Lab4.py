@@ -93,7 +93,7 @@ def generate_port_traffic_report(log_file, port_number):
 
                 
 
-####Step 11### generating invalid user report 
+####Step 11 ### generating invalid user report 
 def generate_invalid_user_report(log_file):
     records = []
     with open(log_file, 'r') as f:
@@ -109,7 +109,7 @@ def generate_invalid_user_report(log_file):
 
 
 
-####Step 12### to generate source ip log 
+####Step 12 ### to generate source ip log 
 def generate_source_ip_log(log_file, ip_address):
     records, _ = filter_log_by_regex(log_file, f'SRC={ip_address}') 
     with open('source_ip_log.csv', 'w') as f:
