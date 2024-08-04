@@ -3,12 +3,7 @@
 #Course: Scripting Applications# 
 #Assignment: 4#
 
-##filepath=(/Users/dennidam/Desktop/Lab-assignment-3-scrpiting-applications-/lab-4-gateway-/gateway.log)##
-
-##### project: writing a python script that process a gateway log file line by line #####
-
-
-
+##### project: writing a python script that process a gateway log file line by line ####
 import re
 import sys
 import os
@@ -17,8 +12,6 @@ import pandas as pd
 
 def main():
     log_file = get_log_file_path_from_cmd_line()
-
-
 
 #step 3
 def get_log_file_path_from_cmd_line():
@@ -59,8 +52,6 @@ def filter_log_by_regex(log_file, regex, ignore_case=True, print_summary=False, 
 
     return records, captured_data
 
-
-
 ### step 8 ##
 def tally_port_traffic(log_file):
     port_counts = {}
@@ -75,8 +66,6 @@ def tally_port_traffic(log_file):
                     port_counts[port] = 1
         return port_counts
 
-
-
 ##### step 9 #####
 def generate_port_traffic_report(log_file, port_number):
     records, _ = []
@@ -90,9 +79,6 @@ def generate_port_traffic_report(log_file, port_number):
     df = pd.DataFrame(records, colums=['Date', 'Sorce IP', 'Destination IP', 'Source Port', 'Destination Port'])
     df.to_csv(f"destination_port_{port_number}_report.csv", index=False)
 
-
-                
-
 ####Step 11 ### generating invalid user report 
 def generate_invalid_user_report(log_file):
     records = []
@@ -105,9 +91,6 @@ def generate_invalid_user_report(log_file):
 
     df = pd.Dataframe(records, columns=['Date', 'Time', 'Username' 'IP Address'])
     df.to_csv('invalid_user.csv', index=False)
-
-
-
 
 ####Step 12 ### to generate source ip log 
 def generate_source_ip_log(log_file, ip_address):
